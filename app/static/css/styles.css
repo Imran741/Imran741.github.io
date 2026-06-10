@@ -1,0 +1,75 @@
+/* Password Security Analyzer — dashboard styles */
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+.progress {
+    height: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+#strength-bar {
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+/* Strength tiers drive both the bar and the label colour */
+.tier-very-weak   { background-color: var(--bs-danger) !important; color: var(--bs-danger); }
+.tier-weak        { background-color: #fd7e14 !important; color: #fd7e14; }
+.tier-moderate    { background-color: var(--bs-warning) !important; color: var(--bs-warning); }
+.tier-strong      { background-color: #20c997 !important; color: #20c997; }
+.tier-very-strong { background-color: var(--bs-success) !important; color: var(--bs-success); }
+
+/* The label uses only the colour, not the background */
+.tier-label.tier-very-weak,
+.tier-label.tier-weak,
+.tier-label.tier-moderate,
+.tier-label.tier-strong,
+.tier-label.tier-very-strong {
+    background-color: transparent !important;
+}
+
+#charset-list li {
+    color: var(--bs-secondary-color);
+}
+
+#charset-list li.present {
+    color: var(--bs-body-color);
+}
+
+#charset-list li .bi::before {
+    content: "\f659"; /* bi-x-circle */
+    color: var(--bs-danger);
+    margin-right: 0.4rem;
+}
+
+#charset-list li.present .bi::before {
+    content: "\f26b"; /* bi-check-circle-fill */
+    color: var(--bs-success);
+}
+
+#recommendations li {
+    padding: 0.45rem 0;
+    border-bottom: 1px solid var(--bs-border-color-translucent);
+    font-size: 0.9rem;
+}
+
+#recommendations li:last-child {
+    border-bottom: none;
+}
+
+.card {
+    border: 1px solid var(--bs-border-color-translucent);
+}
+
+@media (max-width: 575.98px) {
+    .display-6 {
+        font-size: 1.6rem;
+    }
+}

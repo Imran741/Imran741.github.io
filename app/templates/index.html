@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center mb-4">
+    <div class="col-lg-8">
+        <h1 class="h3 mb-1">Analyze a password</h1>
+        <p class="text-secondary mb-3">
+            Strength scoring, entropy, crack-time estimation and breach detection &mdash; in real time.
+        </p>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <label for="password-input" class="form-label fw-semibold">Password</label>
+                <div class="input-group input-group-lg mb-2">
+                    <span class="input-group-text"><i class="bi bi-key"></i></span>
+                    <input type="password" class="form-control" id="password-input"
+                           placeholder="Type or paste a password…"
+                           maxlength="128" autocomplete="off" autocapitalize="off"
+                           autocorrect="off" spellcheck="false" aria-describedby="strength-label">
+                    <button class="btn btn-outline-secondary" type="button" id="toggle-visibility"
+                            aria-label="Toggle password visibility">
+                        <i class="bi bi-eye" id="visibility-icon"></i>
+                    </button>
+                </div>
+
+                <!-- Strength meter -->
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="small text-secondary">Strength</span>
+                    <span class="fw-semibold" id="strength-label">&mdash;</span>
+                </div>
+                <div class="progress" role="progressbar" aria-label="Password strength"
+                     aria-valuemin="0" aria-valuemax="100" id="strength-progress">
+                    <div class="progress-bar" id="strength-bar" style="width: 0%"></div>
+                </div>
+
+                <div class="form-check form-switch mt-3">
+                    <input class="form-check-input" type="checkbox" id="breach-toggle" checked>
+                    <label class="form-check-label small" for="breach-toggle">
+                        Check against known breaches (sends only a 5-char hash prefix to Have I Been Pwned)
+                    </label>
+                </div>
+                <div class="text-danger small mt-2 d-none" id="error-message" role="alert"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 justify-content-center d-none" id="results">
+    <!-- Entropy card -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h2 class="h6 text-secondary text-uppercase mb-3">
+                    <i class="bi bi-graph-up-arrow me-1"></i>Entropy
+                </h2>
+                <div class="display-6 fw-bold mb-1"><span id="entropy-bits">0</span>
+                    <span class="fs-5 fw-normal text-secondary">bits</span></div>
+                <span class="badge mb-3" id="entropy-category">&mdash;</span>
+                <ul class="list-unstyled small mb-0" id="charset-list">
+                    <li data-class="lowercase"><i class="bi"></i> Lowercase letters</li>
+                    <li data-class="uppercase"><i class="bi"></i> Uppercase letters</li>
+                    <li data-class="digits"><i class="bi"></i> Numbers</li>
+                    <li data-class="special"><i class="bi"></i> Special characters</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Crack time card -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h2 class="h6 text-secondary text-uppercase mb-3">
+                    <i class="bi bi-stopwatch me-1"></i>Estimated crack time
+                </h2>
+                <div class="display-6 fw-bold mb-1" id="crack-time">&mdash;</div>
+                <p class="small text-secondary mb-3" id="crack-model"></p>
+                <h3 class="h6 text-secondary text-uppercase">Breach status</h3>
+                <div id="breach-status" class="small">&mdash;</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recommendations card -->
+    <div class="col-lg-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h2 class="h6 text-secondary text-uppercase mb-3">
+                    <i class="bi bi-lightbulb me-1"></i>Recommendations
+                </h2>
+                <ul class="list-unstyled mb-0" id="recommendations"></ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pattern findings -->
+    <div class="col-lg-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h6 text-secondary text-uppercase mb-3">
+                    <i class="bi bi-search me-1"></i>Pattern analysis
+                </h2>
+                <div class="row g-3 small" id="pattern-findings"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}
